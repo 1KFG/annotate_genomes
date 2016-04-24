@@ -5,6 +5,5 @@ module unload perl
 module load maker/2.31.8
 module load RepeatMasker
 module load ncbi-blast
-module load tRNAscan-SE
 
 maker >& maker-$PBS_ARRAYID.out

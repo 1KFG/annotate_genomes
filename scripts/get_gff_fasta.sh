@@ -1,7 +1,5 @@
-#PBS -l nodes=1:ppn=1 -j oe
+#PBS -l nodes=1:ppn=1 -j oe -l walltime=4:00:00
 
-module load perl
-module load stajichlab
 module load maker/2.31.8
 D=`dirname \`pwd\``
 SPECIES=`basename $D`

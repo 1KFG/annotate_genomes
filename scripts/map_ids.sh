@@ -1,7 +1,4 @@
 #PBS -j oe
-module load stajichlab
-module load stajichlab-perl
-module load perl
 module load maker/2.31.6
 
 D=`dirname \`pwd\``

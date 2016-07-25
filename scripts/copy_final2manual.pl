@@ -2,10 +2,13 @@
 use strict;
 use warnings;
 use Bio::SeqIO;
+use Getopt::Long;
 
+my $force = 0;
+GetOptions('force!' => \$force);
 my $debug = 1;
 my $debug_one = 0;
-my $force = 0;
+
 my %type2ext = ( 'proteins' => 'aa',
 		 'transcripts' => 'CDS',
     );
@@ -23,22 +26,24 @@ for my $f ( readdir(DIR) ) {
     opendir(FAM,"$dir/$f") || die $!;
     for my $sp ( readdir(FAM) ) {
 	next if $sp =~ /^\./;
-	warn("infile read $sp\n");
+        next if $sp =~ /Caliciopsis_orientalis/;
+	warn("infile read $sp\n") if $debug;
 	next if ( ! -d "$dir/$f/$sp");
 	if( -f "$dir/$f/$sp/$sp.fasta" ) {
-	    warn("Genome fasta is $sp\n");
+	    warn("Genome fasta is $sp\n") if $debug;
 	    my $prefix = &make_prefix($sp);
-	    next if( -f "$dest/$f/$sp/$sp.assembly.fasta.gz" && ! $force );
-	    my $in = Bio::SeqIO->new(-format => 'fasta',
-				     -file   => "$dir/$f/$sp/$sp.fasta");
-	    
-	    open(my $fh => "| gzip -c > $dest/$f/$sp/$sp.assembly.fasta.gz") || die $!;
-	    my $out = Bio::SeqIO->new(-format => 'fasta',
-				      -fh   => $fh);
-	    
-	    while( my $s = $in->next_seq ) {
-		$s->display_id(sprintf("%s|%s",$prefix,$s->display_id));
-		$out->write_seq($s);
+	    unless( -f "$dest/$f/$sp/$sp.assembly.fasta.gz" && ! $force) {
+		my $in = Bio::SeqIO->new(-format => 'fasta',
+					 -file   => "$dir/$f/$sp/$sp.fasta");
+
+		open(my $fh => "| gzip -c > $dest/$f/$sp/$sp.assembly.fasta.gz") || die $!;
+		my $out = Bio::SeqIO->new(-format => 'fasta',
+					  -fh   => $fh);
+
+		while( my $s = $in->next_seq ) {
+#		$s->display_id(sprintf("%s|%s",$prefix,$s->display_id));
+		    $out->write_seq($s);
+		}
 	    }
 	}
 #	warn("sp is $dir/$f/$sp\n") if $debug;
@@ -85,7 +90,7 @@ for my $f ( readdir(DIR) ) {
 					  -fh   => $fh);
 
 		while( my $s = $in->next_seq ) {
-		    $s->display_id(sprintf("%s|%s",$prefix,$s->display_id));
+#		    $s->display_id(sprintf("%s|%s",$prefix,$s->display_id));
 		    $out->write_seq($s);
 		}
 	    }

@@ -1,5 +1,5 @@
 #PBS -j oe
-module load maker/2.31.6
+module load maker
 
 D=`dirname \`pwd\``
 SPECIES=`basename $D`

@@ -1,5 +1,5 @@
 #PBS -j oe
-module load maker/2.31.8
+module load maker
 INFILE=$1
 SPECIES=`basename \`pwd\``
 PREF=`echo $SPECIES | perl -p -e 'my @n = split('_',$_); $_ = uc substr($n[0],0,1) . substr($n[1],0,3). "_"'`

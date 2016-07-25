@@ -1,11 +1,10 @@
-#PBS -l nodes=1:ppn=8,mem=24gb -q js -N cegma -j oe 
+#PBS -l nodes=1:ppn=8,mem=8gb -N cegma -j oe 
 
 module load cegma
-module load hmmer
+module load hmmer/2
 module load wise
 module load geneid
-module load stajichlab
-module load snap
+module load SNAP
 module load augustus
 module load ncbi-blast/2.2.25+
 hostname
